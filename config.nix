@@ -115,11 +115,11 @@ in {
     nodev = {
       "/" = {
         fsType = "tmpfs";
-        mountOptions = [ "size=128M" ];
+        mountOptions = [ "size=128M" "mode=0755" ];
       };
       "/tmp" = {
         fsType = "tmpfs";
-        mountOptions = [ "size=4G" ];
+        mountOptions = [ "size=4G" "mode=1777" ];
       };
     };
   };
