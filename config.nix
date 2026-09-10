@@ -68,6 +68,7 @@ in {
               settings.bypassWorkqueues = true;
               content = {
                 type = "btrfs";
+                extraArgs = [ "--force" "--checksum" "xxhash" ];
                 subvolumes = {
                   "@nix" = {
                     mountpoint = "/nix";
