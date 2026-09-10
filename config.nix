@@ -29,6 +29,7 @@ in {
       devenv
       ffmpeg
       impala
+      river
       wget
       wiremix
     ];
@@ -56,6 +57,8 @@ in {
       fd.enable = true;
 
       firefox.enable = true;
+
+      foot.enable = true;
 
       fzf.enable = true;
 
@@ -128,6 +131,7 @@ in {
   hardware.bluetooth.enable = true;
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
+  hardware.graphics.enable = true;
 
   zramSwap.enable = true;
 
