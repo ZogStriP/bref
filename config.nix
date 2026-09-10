@@ -129,6 +129,7 @@ in {
   preservation.preserveAt.${persist} = {
     directories = [
       "/var/lib/nixos"
+      "/var/log"
     ];
     
     files = [
@@ -172,10 +173,6 @@ in {
                   };
                   "@persist" = {
                     mountpoint = persist;
-                    mountOptions = [ "noatime" ];
-                  };
-                  "@log" = {
-                    mountpoint = "/var/log";
                     mountOptions = [ "noatime" ];
                   };
                 };
