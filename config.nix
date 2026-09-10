@@ -64,8 +64,6 @@ in {
 
       jq.enable = true;
 
-      nh.enable = true;
-
       mpv.enable = true;
 
       ripgrep.enable = true;
@@ -78,6 +76,14 @@ in {
 
       zoxide.enable = true;
     };
+  };
+
+  programs = {
+    _1password.enable = true;
+    _1password-gui.enable = true;
+    _1password-gui.polkitPolicyOwners = [ username ];
+
+    nh.enable = true;
   };
 
   fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
@@ -94,7 +100,6 @@ in {
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.getty.autologinUser = username;
-  services.libinput.touchpad.naturalScrolling = true;
   services.logind.settings.Login.HandlePowerKey = "ignore";
   services.tailscale.enable = true;
   services.tlp.enable = true;
