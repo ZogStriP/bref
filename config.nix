@@ -1,5 +1,7 @@
 { d, p, hm, hostname, ... } : let
   username     = "zogstrip";
+  name         = "Régis Hanol";
+  email        = "regis@hanol.fr";
   persist      = "/persist";
   stateVersion = "26.05";
 in {
@@ -29,7 +31,10 @@ in {
       fd.enable = true;
       fzf.enable = true;
       gh.enable = true;
+
       git.enable = true;
+      git.settings.user = { inherit name email; };
+
       jq.enable = true;
       nh.enable = true;
       ripgrep.enable = true;
