@@ -23,12 +23,12 @@ in {
     };
 
     home.packages = with pkgs; [
-      bluetui  # ᛒluetooth - https://github.com/pythops/bluetui
-      devenv   # https://devenv.sh
-      ffmpeg   # screen recording / video stuff
-      impala   # 🛜 wifi - https://github.com/pythops/impala
-      wget     # downloading stuff
-      wiremix  # 🔉 sound - https://github.com/tsowell/wiremix
+      bluetui
+      devenv
+      ffmpeg
+      impala
+      wget
+      wiremix
     ];
 
     programs = {
@@ -87,7 +87,7 @@ in {
   users.users.${username} = {
     isNormalUser = true;
     hashedPassword = "";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "video" "wheel" ];
   };
 
   services.btrfs.autoScrub.enable = true;
@@ -100,11 +100,9 @@ in {
   services.tlp.enable = true;
 
   services.udev.extraHwdb = ''
-    # remap CAPS lock to ESC
     evdev:atkbd:*
       KEYBOARD_KEY_3a=esc
 
-    # disable RFKILL key (airplane mode)
     evdev:input:b0018v32ACp0006*
       KEYBOARD_KEY_100c6=reserved
   '';
@@ -112,6 +110,8 @@ in {
   time.timeZone = "Europe/Paris";
 
   networking.hostName = hostname;
+  networking.useNetworkd = true;
+  networking.wireless.iwd.enable = true;
 
   hardware.acpilight.enable = true;
   hardware.bluetooth.enable = true;
