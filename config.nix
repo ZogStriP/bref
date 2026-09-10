@@ -17,13 +17,34 @@ in {
     home.shellAliases = {
       ".."  = "cd ..";
       "..." = "cd ../..";
+      "ff"  = "fastfetch";
     };
+
+    bash.enable = true;
+    bat.enable = true;
+    btop.enable = true;
+    eza.enable = true;
+    fd.enable = true;
+    fzf.enable = true;
+    gh.enable = true;
+    git.enable = true;
+    jq.enable = true;
+    nh.enable = true;
+    ripgrep.enable = true;
+    ssh.enable = true;
+    starship.enable = true;
+    vim.enable = true;
+    zoxide.enable = true;
   };
 
   users.users.${username} = {
     isNormalUser = true;
+    hashedPassword = "";
     extraGroups = [ "wheel" ];
   };
+
+  services.getty.autologinUser = username;
+  services.btrfs.autoScrub.enable = true;
 
   time.timeZone = "Europe/Paris";
 
@@ -120,4 +141,5 @@ in {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.config.allowUnfree = true;
 }
