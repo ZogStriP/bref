@@ -3,7 +3,7 @@
   name         = "Régis Hanol";
   email        = "regis@hanol.fr";
   persist      = "/persist";
-  stateVersion = "26.05";
+  stateVersion = "26.11";
 in {
   imports = [
     d.nixosModules.disko
@@ -33,23 +33,49 @@ in {
 
     programs = {
       bash.enable = true;
+      bash.historyControl = [ "ignoreboth" ];
+
       bat.enable = true;
+
       btop.enable = true;
+      btop.settings = {
+        disks_filter = "/ /boot /nix /tmp/ /swap";
+        proc_tree = true;
+        rounded_corners = false;
+        vim_keys = true;
+      };
+
+      chromium.enable = true;
+
       eza.enable = true;
+
       fastfetch.enable = true;
+
       fd.enable = true;
+
+      firefox.enable = true;
+
       fzf.enable = true;
+
       gh.enable = true;
 
       git.enable = true;
       git.settings.user = { inherit name email; };
 
       jq.enable = true;
+
       nh.enable = true;
+
+      mpv.enable = true;
+
       ripgrep.enable = true;
+
       ssh.enable = true;
+
       starship.enable = true;
+
       vim.enable = true;
+
       zoxide.enable = true;
     };
   };
