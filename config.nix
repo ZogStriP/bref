@@ -20,21 +20,23 @@ in {
       "ff"  = "fastfetch";
     };
 
-    bash.enable = true;
-    bat.enable = true;
-    btop.enable = true;
-    eza.enable = true;
-    fd.enable = true;
-    fzf.enable = true;
-    gh.enable = true;
-    git.enable = true;
-    jq.enable = true;
-    nh.enable = true;
-    ripgrep.enable = true;
-    ssh.enable = true;
-    starship.enable = true;
-    vim.enable = true;
-    zoxide.enable = true;
+    programs = {
+      bash.enable = true;
+      bat.enable = true;
+      btop.enable = true;
+      eza.enable = true;
+      fd.enable = true;
+      fzf.enable = true;
+      gh.enable = true;
+      git.enable = true;
+      jq.enable = true;
+      nh.enable = true;
+      ripgrep.enable = true;
+      ssh.enable = true;
+      starship.enable = true;
+      vim.enable = true;
+      zoxide.enable = true;
+    };
   };
 
   users.users.${username} = {
