@@ -1,10 +1,10 @@
 { d, p, hm, hostname, pkgs, ... } : let
-  username     = "zogstrip";
-  name         = "Régis Hanol";
-  email        = "regis@hanol.fr";
-  persist      = "/persist";
-  stateVersion = "26.11";
-  privateDirs  = map (directory: { inherit directory; mode = "0700"; });
+  username      = "zogstrip";
+  name          = "Régis Hanol";
+  email         = "regis@hanol.fr";
+  persist       = "/persist";
+  stateVersion  = "26.11";
+  ownerOnlyDirs = map (directory: { inherit directory; mode = "0700"; });
 in {
   imports = [
     d.nixosModules.disko
@@ -14,6 +14,7 @@ in {
 
   system.stateVersion = stateVersion;
 
+  home-manager.useGlobalPkgs = true;
   home-manager.users.${username} = {
     home.stateVersion = stateVersion;
 
@@ -40,7 +41,7 @@ in {
 
       btop.enable = true;
       btop.settings = {
-        disks_filter = "/ /boot /nix /tmp/ /swap";
+        disks_filter = "/ /boot /nix ${persist} /tmp";
         proc_tree = true;
         rounded_corners = false;
         vim_keys = true;
@@ -70,6 +71,7 @@ in {
       ripgrep.enable = true;
 
       ssh.enable = true;
+      ssh.enableDefaultConfig = false;
 
       starship.enable = true;
 
@@ -93,18 +95,21 @@ in {
   users.users.root.hashedPassword = "!";
   users.users.${username} = {
     isNormalUser = true;
-    hashedPassword = "";
     extraGroups = [ "video" "wheel" ];
   };
+
+  security.rtkit.enable = true;
 
   services.btrfs.autoScrub.enable = true;
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.getty.autologinUser = username;
   services.logind.settings.Login.HandlePowerKey = "ignore";
+  services.pipewire.enable = true;
+  services.pipewire.alsa.enable = true;
+  services.pipewire.pulse.enable = true;
   services.tailscale.enable = true;
   services.tlp.enable = true;
-
   services.udev.extraHwdb = ''
     evdev:atkbd:*
       KEYBOARD_KEY_3a=esc
@@ -129,24 +134,34 @@ in {
   preservation.enable = true;
   preservation.preserveAt.${persist} = {
     directories = [
+      "/var/lib/fwupd"
       "/var/lib/nixos"
+      "/var/lib/systemd/timers"
       "/var/log"
+    ] ++ ownerOnlyDirs [
+      "/var/lib/bluetooth"
+      "/var/lib/fprint"
+      "/var/lib/iwd"
+      "/var/lib/tailscale"
     ];
-    
+
     files = [
       { file = "/etc/machine-id"; inInitrd = true; }
     ];
 
     users.${username} = {
-      directories = privateDirs [
+      directories = ownerOnlyDirs [
+        ".ssh"
         "poetry"
       ];
 
       files = [
-        ".bash_history"
+        { file = ".bash_history"; mode = "0600"; }
       ];
     };
   };
+
+  systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
   fileSystems.${persist}.neededForBoot = true;
 
@@ -206,16 +221,12 @@ in {
   };
 
   boot = {
-    initrd.systemd.enable = true;
-
     loader = {
       timeout = 0;
 
-      systemd-boot = {
-        enable = true;
-        editor = false;
-        configurationLimit = 5;
-      };
+      systemd-boot.enable = true;
+      systemd-boot.editor = false;
+      systemd-boot.configurationLimit = 5;
 
       efi.canTouchEfiVariables = true;
     };
