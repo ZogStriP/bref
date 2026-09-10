@@ -1,7 +1,7 @@
 { d, p, hm, hostname, ... } : let
   username     = "zogstrip";
   persist      = "/persist";
-  stateVersion = "26.06";
+  stateVersion = "26.05";
 in {
   imports = [
     d.nixosModules.disko
