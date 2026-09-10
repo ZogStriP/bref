@@ -25,6 +25,7 @@ in {
       bat.enable = true;
       btop.enable = true;
       eza.enable = true;
+      fastfetch.enable = true;
       fd.enable = true;
       fzf.enable = true;
       gh.enable = true;
