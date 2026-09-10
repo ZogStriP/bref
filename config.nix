@@ -9,6 +9,8 @@ in {
     hm.nixosModules.home-manager
   ];
 
+  system.stateVersion = stateVersion;
+
   home-manager.users.${username} = {
     home.stateVersion = stateVersion;
 
@@ -19,6 +21,7 @@ in {
   };
 
   users.users.${username} = {
+    isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
 
@@ -97,7 +100,21 @@ in {
     };
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  boot = {
+    initrd.systemd.enable = true;
 
-  system.stateVersion = stateVersion;
+    loader = {
+      timeout = 0;
+
+      systemd-boot = {
+        enable = true;
+        editor = false;
+        configurationLimit = 5;
+      };
+
+      efi.canTouchEfiVariables = true;
+    };
+  };
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
