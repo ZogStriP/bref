@@ -1,14 +1,14 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    n.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
+    d.url = "github:nix-community/disko";
+    d.inputs.nixpkgs.follows = "nixpkgs";
 
-    preservation.url = "github:nix-community/preservation";
+    p.url = "github:nix-community/preservation";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    hm.url = "github:nix-community/home-manager";
+    hm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, ... } @ inputs : {
