@@ -4,6 +4,7 @@
   email        = "regis@hanol.fr";
   persist      = "/persist";
   stateVersion = "26.11";
+  privateDirs  = map (directory: { inherit directory; mode = "0700"; });
 in {
   imports = [
     d.nixosModules.disko
@@ -135,6 +136,16 @@ in {
     files = [
       { file = "/etc/machine-id"; inInitrd = true; }
     ];
+
+    users.${username} = {
+      directories = privateDirs [
+        "poetry"
+      ];
+
+      files = [
+        ".bash_history"
+      ];
+    };
   };
 
   fileSystems.${persist}.neededForBoot = true;
