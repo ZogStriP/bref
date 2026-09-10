@@ -1,4 +1,4 @@
-{ d, p, hm, hostname, ... } : let
+{ d, p, hm, hostname, pkgs, ... } : let
   username     = "zogstrip";
   name         = "Régis Hanol";
   email        = "regis@hanol.fr";
@@ -21,6 +21,15 @@ in {
       "..." = "cd ../..";
       "ff"  = "fastfetch";
     };
+
+    home.packages = with pkgs; [
+      bluetui  # ᛒluetooth - https://github.com/pythops/bluetui
+      devenv   # https://devenv.sh
+      ffmpeg   # screen recording / video stuff
+      impala   # 🛜 wifi - https://github.com/pythops/impala
+      wget     # downloading stuff
+      wiremix  # 🔉 sound - https://github.com/tsowell/wiremix
+    ];
 
     programs = {
       bash.enable = true;
@@ -45,18 +54,45 @@ in {
     };
   };
 
+  fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
+
+  users.mutableUsers = false;
+  users.users.root.hashedPassword = "!";
   users.users.${username} = {
     isNormalUser = true;
     hashedPassword = "";
     extraGroups = [ "wheel" ];
   };
 
-  services.getty.autologinUser = username;
   services.btrfs.autoScrub.enable = true;
+  services.fprintd.enable = true;
+  services.fwupd.enable = true;
+  services.getty.autologinUser = username;
+  services.libinput.touchpad.naturalScrolling = true;
+  services.logind.settings.Login.HandlePowerKey = "ignore";
+  services.tailscale.enable = true;
+  services.tlp.enable = true;
+
+  services.udev.extraHwdb = ''
+    # remap CAPS lock to ESC
+    evdev:atkbd:*
+      KEYBOARD_KEY_3a=esc
+
+    # disable RFKILL key (airplane mode)
+    evdev:input:b0018v32ACp0006*
+      KEYBOARD_KEY_100c6=reserved
+  '';
 
   time.timeZone = "Europe/Paris";
 
   networking.hostName = hostname;
+
+  hardware.acpilight.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
+
+  zramSwap.enable = true;
 
   preservation.enable = true;
   preservation.preserveAt.${persist} = {
