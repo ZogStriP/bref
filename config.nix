@@ -98,6 +98,7 @@ in {
   users.users.root.hashedPassword = "!";
   users.users.${username} = {
     isNormalUser = true;
+    hashedPassword = "";
     extraGroups = [ "video" "wheel" ];
   };
 
